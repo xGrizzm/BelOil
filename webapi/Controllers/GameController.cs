@@ -17,7 +17,6 @@ namespace webapi.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("game")]
         public async Task<IActionResult> GetGame()
         {
             return Ok(await _beloilService.GetGameAsync());

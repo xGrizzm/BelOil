@@ -3,9 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using webapi.core.Constants;
+using webapi.MappingProfiles;
 using webapi.repositories;
 using webapi.repositories.Contexts;
 using webapi.repositories.contracts;
+using webapi.services;
+using webapi.services.contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,11 +60,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     });
 builder.Services.AddAuthorization();
 
+// Mapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 // Context
 builder.Services.AddDbContext<PostgreDbContext>((optionsBuilder) =>
     optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 
 // Services
+builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
 
 // Repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();

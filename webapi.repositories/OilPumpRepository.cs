@@ -1,8 +1,10 @@
-﻿using webapi.repositories.contracts;
+﻿using webapi.repositories.Contexts;
+using webapi.repositories.contracts;
 
 namespace webapi.repositories
 {
-    public class OilPumpRepository : IOilPumpRepository
+    public class OilPumpRepository : BaseRepository, IOilPumpRepository
     {
+        public OilPumpRepository(PostgreDbContext postgreDbContext) : base(postgreDbContext) { }
     }
 }

@@ -11,7 +11,7 @@ namespace webapi.repositories.Contexts
 
         public DbSet<OilPumpEntity> OilPumps { get; set; }
 
-        public PostgreDbContext()
+        public PostgreDbContext(DbContextOptions<PostgreDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }

@@ -6,4 +6,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\webapi.core\webapi.core.csproj" />
+  </ItemGroup>
+
 </Project>

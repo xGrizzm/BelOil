@@ -12,5 +12,11 @@
             NextPumping = nextPumping;
             FieldId = fieldId;
         }
+
+        public OilPumpEntity(DateTime nextPumping, int fieldId)
+        {
+            NextPumping = nextPumping;
+            FieldId = fieldId;
+        }
     }
 }

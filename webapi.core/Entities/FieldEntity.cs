@@ -14,5 +14,11 @@
             Multiplier = multiplier;
             UserId = userId;
         }
+
+        public FieldEntity(int multiplier, int userId)
+        {
+            Multiplier = multiplier;
+            UserId = userId;
+        }
     }
 }

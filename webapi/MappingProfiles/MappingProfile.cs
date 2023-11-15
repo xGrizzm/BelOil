@@ -9,6 +9,8 @@ namespace webapi.MappingProfiles
         public MappingProfile() 
         {
             CreateMap<UserEntity, User>();
+            CreateMap<FieldEntity, Field>();
+            CreateMap<OilPumpEntity, OilPump>();
         }
     }
 }

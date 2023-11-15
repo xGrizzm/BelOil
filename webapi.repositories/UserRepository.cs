@@ -13,5 +13,22 @@ namespace webapi.repositories
         {
             return await Context.Users.FirstOrDefaultAsync(u => u.Login == login);
         }
+
+        public async Task<UserEntity> GetAsync(int userId)
+        {
+            return await Context.Users
+                .Include(u => u.Fields)
+                    .ThenInclude(f => f.OilPumps)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
+        public async Task UpdateBarrelsAsync(int userId, int barrels)
+        {
+            UserEntity user = await GetAsync(userId);
+
+            user.Barrels = barrels;
+
+            await Context.SaveChangesAsync();
+        }
     }
 }

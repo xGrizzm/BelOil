@@ -43,7 +43,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
     options.TokenValidationParameters = new TokenValidationParameters

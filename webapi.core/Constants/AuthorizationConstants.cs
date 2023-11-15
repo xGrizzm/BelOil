@@ -8,21 +8,21 @@ namespace webapi.core.Constants
     /// </summary>
     public static class AuthorizationConstants
     {
-        private const string _secretKey = "jVm56wJtRIXDIGaYfAIAI199PYTzpL";
+        private const string _secretKey = "cJvTu3zQc5l84RBG1Y7TlNt2mn6R3b";
 
         /// <summary>
         /// Issuer
         /// </summary>
-        public const string Issuer = "GKS WEB API";
+        public const string Issuer = "BELOIL API";
         /// <summary>
         /// Audience
         /// </summary>
-        public const string Audience = "GKS VUE APP";
+        public const string Audience = "BELOIL APP";
 
         /// <summary>
         /// Token lifetime in hours
         /// </summary>
-        public const int TokenLifetime = 12; 
+        public const int TokenLifetime = 24;
 
         /// <summary>
         /// Returns symmetric secret key

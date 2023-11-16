@@ -9,5 +9,7 @@
         public IEnumerable<OilPump> OilPumps { get; set; }
 
         public int OilPumpPrice { get; set; }
+
+        public int NextFieldPrice { get; set; }
     }
 }

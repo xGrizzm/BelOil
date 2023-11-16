@@ -97,6 +97,7 @@ namespace webapi.services
 
             Field field = Mapper.Map<Field>(addedField);
             field.OilPumpPrice = GameHelper.GetOilPumpPrice(multiplier);
+            field.NextFieldPrice = GameHelper.GetOilPumpPrice((int)Math.Pow(2, user.Fields.Count));
             return new BuyResponse<Field>(barrels, field);
         }
 

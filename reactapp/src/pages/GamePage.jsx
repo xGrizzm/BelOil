@@ -44,7 +44,7 @@ export default function GamePage() {
             setState({ ...state, isLoading: true });
             const data = await ApiService.post(URLConstants.BUY_FIELD_URL);
             state.fields.push(data.item);
-            setState({ ...state, barrels: data.barrels, isLoading: false });
+            setState({ ...state, barrels: data.barrels, fieldPrice: data.item.nextFieldPrice, isLoading: false });
         } catch (error) {
             setState({ ...state, isLoading: false });
         }

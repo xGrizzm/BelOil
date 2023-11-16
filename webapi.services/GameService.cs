@@ -52,12 +52,12 @@ namespace webapi.services
                 throw new Exception("You can't collect not your Oil Pump");
             }
 
-            if (oilPump.NextPumping > DateTime.Now)
+            if (oilPump.NextPumping > DateTime.UtcNow)
             {
                 throw new Exception("Unable to collect Oil Pump");
             }
 
-            DateTime nextPumping = DateTime.Now.AddSeconds(GameHelper.GetNextPumpingSeconds(oilPump.Field.Multiplier));
+            DateTime nextPumping = DateTime.UtcNow.AddSeconds(GameHelper.GetNextPumpingSeconds(oilPump.Field.Multiplier));
             await _oilPumpRepository.UpdateNextPumpingAsync(oilPumpId, nextPumping);
 
             int barrels = user.Barrels + GameHelper.GetBarrels(oilPump.Field.Multiplier);
@@ -109,7 +109,7 @@ namespace webapi.services
                 throw new Exception("Not enough Barrels");
             }
 
-            OilPumpEntity addedOilPump = await _oilPumpRepository.AddAsync(new OilPumpEntity(DateTime.Now, fieldId));
+            OilPumpEntity addedOilPump = await _oilPumpRepository.AddAsync(new OilPumpEntity(DateTime.UtcNow, fieldId));
 
             int barrels = user.Barrels - oilPumpPrice;
             await _userRepository.UpdateBarrelsAsync(user.Id, barrels);

@@ -20,9 +20,9 @@ namespace webapi.repositories.Contexts
         {
             List<UserEntity> users = new List<UserEntity>
             {
-                new UserEntity(1, "Нефтяник Василий", "vasil", "vasil"),
-                new UserEntity(2, "Чернозолотой магнат", "magnat", "magnat"),
-                new UserEntity(3, "Oil one love <3", "oillove", "oillove")
+                new UserEntity(1, "Нефтяник Василий", "vasil", "TXvkIvTwAkOlf0z9DmMSi5of4LsGk8XdtNKg7sSYt5Q=DwC06O3oIQSmbcTjGROkgVCGh1SY"),
+                new UserEntity(2, "Чернозолотой магнат", "magnat", "LPWCorQonbIL4cTBMokHud+HZxeiPNYy0RUN38n+JXE=NNdS1Ouit8KQgN3g14dlLtMi5VYO"),
+                new UserEntity(3, "Oil one love <3", "oillove", "NEcuTLnLwOfGMJZiYe1U9j4dvYl2vYw2vwnBIrPmABU=PycrDcC22bqNsuruIf0t0Yk9saXd")
             };
             modelBuilder.Entity<UserEntity>().HasData(users);
 
@@ -36,9 +36,9 @@ namespace webapi.repositories.Contexts
 
             List<OilPumpEntity> oilPumps = new List<OilPumpEntity>
             {
-                new OilPumpEntity(1, DateTime.Now, 1),
-                new OilPumpEntity(2, DateTime.Now, 2),
-                new OilPumpEntity(3, DateTime.Now, 3)
+                new OilPumpEntity(1, DateTime.UtcNow, 1),
+                new OilPumpEntity(2, DateTime.UtcNow, 2),
+                new OilPumpEntity(3, DateTime.UtcNow, 3)
             };
             modelBuilder.Entity<OilPumpEntity>().HasData(oilPumps);
         }

@@ -1,41 +1,47 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
-export default class AuthorizationPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { login: "", password: "" };
-    }
+import ApiService from '../api/ApiService';
+import JwtHelper from '../utils/helpers/JwtHelper';
+import URLConstants from '../utils/constants/URLConstants';
 
-    static handleChange = event => {
+export default function AuthorizationPage() {
+    const [state, setState] = useState({ login: "vasil", password: "vasil" });
+    
+    const navigate = useNavigate();
+
+    const handleChange = event => {
         const {name, value} = event.target;
-        setState({
-            [name]: value
-        });
+        setState({...state, [name]: value});
     }
 
-    static loginButtonClick = () => {
-        history.push("/game");
+    const loginButtonClick = async () => {
+        try {
+            const response = await ApiService.post(URLConstants.LOGIN_URL, state);
+            JwtHelper.setToken(response.data.token);
+            navigate("/game");
+        } catch (error) {
+            
+        }
     }
 
-    render() {
-        return (
-            <div>
-                <input
-                    name="login"
-                    type="text"
-                    placeholder="Логин"
-                    defaultValue={this.state.login}
-                    onChange={this.handleChange} />
+    return (
+        <div>
+            <input
+                name="login"
+                type="text"
+                placeholder="Логин"
+                defaultValue={state.login}
+                onChange={handleChange} />
 
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Пароль"
-                    defaultValue={this.state.password}
-                    onChange={this.handleChange} />
+            <input
+                name="password"
+                type="password"
+                placeholder="Пароль"
+                defaultValue={state.password}
+                onChange={handleChange} />
 
-                <button onClick={this.loginButtonClick}>Войти</button>
-            </div>
-        );
-    }
+            <button onClick={loginButtonClick}>Войти</button>
+        </div>
+    );
 }

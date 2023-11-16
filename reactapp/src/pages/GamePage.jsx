@@ -1,16 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class GamePage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { login: "", password: "" };
-    }
-
-    render() {
-        return (
-            <div>
-                GAME PAGE
-            </div>
-        );
-    }
+export default function GamePage() {
+    return (
+        <div>
+            GAME PAGE
+        </div>
+    );
 }

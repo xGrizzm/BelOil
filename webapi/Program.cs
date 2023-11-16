@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 using webapi.core.Constants;
 using webapi.MappingProfiles;
 using webapi.repositories;
@@ -14,7 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+// CORS policy
+builder.Services.AddCors(c => c.AddPolicy("AllowAnyOrigins", builder =>
+    builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()));
 
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -78,12 +85,18 @@ builder.Services.AddTransient<IOilPumpRepository, OilPumpRepository>();
 
 var app = builder.Build();
 
+app.MapControllers();
+app.UseRouting();
+
+app.UseCors("AllowAnyOrigins");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

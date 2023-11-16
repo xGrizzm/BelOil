@@ -5,7 +5,7 @@ import OilBarrelWhite from '../assets/oil-barrel-white.png';
 import '../styles/OilPump.css';
 
 export default function OilPump(props) {
-    const [state, setState] = useState({ isDisabled: true, time: '' });
+    const [state, setState] = useState({ isDisabled: false, time: 'Готово' });
 
     const oilPumpClick = async () => {
         if (state.isDisabled) return; 
@@ -18,21 +18,32 @@ export default function OilPump(props) {
         const currentDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
         const nextPumping = new Date(props.oilPump.nextPumping);
         
-        if (nextPumping > currentDate) {
-            var milliseconds = nextPumping - currentDate;
-
+        var milliseconds = nextPumping - currentDate;
+        if (milliseconds >= 1000) {
             let seconds = parseInt(milliseconds / 1000);
             let minutes = parseInt(seconds / 60);
-            seconds -= minutes * 60;
-            setState({ ...state, isDisabled: true, time: `${minutes}:${seconds}` });
+            let hours = parseInt(minutes / 60);
+            minutes -= hours * 60;
+            seconds -= minutes * 60 + hours * 3600;
+            setState({ 
+                ...state, 
+                isDisabled: true, 
+                time: `${hours == 0 ? '' : hours > 9 ? hours + ':' : '0' + hours + ':' }${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}` 
+            });
             milliseconds -= 1000;
 
             var timer = setInterval(() => {
                 let seconds = parseInt(milliseconds / 1000);
                 let minutes = parseInt(seconds / 60);
-                seconds -= minutes * 60;
-                if (seconds > 0) {
-                    setState({ ...state, isDisabled: true, time: `${minutes}:${seconds}` });
+                let hours = parseInt(minutes / 60);
+                minutes -= hours * 60;
+                seconds -= minutes * 60 + hours * 3600;
+                if (seconds > 0 || minutes > 0 || hours > 0) {
+                    setState({ 
+                        ...state, 
+                        isDisabled: true, 
+                        time: `${hours == 0 ? '' : hours > 9 ? hours + ':' : '0' + hours + ':' }${minutes > 9 ? minutes : '0' + minutes}:${seconds > 9 ? seconds : '0' + seconds}` 
+                    });
                     milliseconds -= 1000;
                 } else {
                     setState({ ...state, isDisabled: false, time: 'Готово' });

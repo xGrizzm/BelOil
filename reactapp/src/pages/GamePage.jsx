@@ -107,7 +107,7 @@ export default function GamePage() {
                         }
                         { state.selectedField ? <button className='btn btn-success ms-auto' onClick={() => setState({...state, selectedField: null})}>Назад</button> : null }
                     </div>
-                    <div className='mt-3' style={{ overflowY: 'auto', height: '550px'}}>
+                    <div className='mt-3' style={{ overflowY: 'auto', height: '500px'}}>
                         {
                             state.selectedField 
                                 ? <Field id={state.selectedField.id} oilPumps={state.selectedField.oilPumps} isLoading={state.isLoading} oilPumpClick={oilPumpClick} />

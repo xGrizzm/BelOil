@@ -1,0 +1,9 @@
+.oil-pump {
+    width: 45%;
+    height: 150px;
+    margin: 10px;
+}
+
+.oil-pump .barrels {
+    font-size: 30px;
+}

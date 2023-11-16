@@ -23,7 +23,7 @@ namespace webapi.repositories
                 .FirstOrDefaultAsync(op => op.Id == oilPumpId);
         }
 
-        public async Task UpdateNextPumpingAsync(int oilPumpId, DateTime nextPumping)
+        public async Task UpdateNextPumpingAsync(int oilPumpId, DateTimeOffset nextPumping)
         {
             OilPumpEntity oilPumpEntity = await GetAsync(oilPumpId);
 

@@ -30,7 +30,7 @@ const ApiService = {
         this.setHeader();
         try {
             const response = await axios.post(`${URL}`, parameters);
-            return response;
+            return response.data;
         } catch ({ response }) {
             this.errorHandler(response.status)
             throw response;
@@ -41,7 +41,7 @@ const ApiService = {
         this.setHeader();
         try {
             const response = await axios.put(`${URL}`, parameters);
-            return response;
+            return response.data;
         } catch ({ response }) {
             this.errorHandler(response.status)
             throw response;

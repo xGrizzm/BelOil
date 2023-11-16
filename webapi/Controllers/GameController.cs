@@ -31,9 +31,9 @@ namespace webapi.Controllers
             {
                 return Ok(await _beloilService.CollectOilPumpAsync(fieldId, oilPumpId));
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
         }
 
@@ -46,9 +46,9 @@ namespace webapi.Controllers
             {
                 return Ok(await _beloilService.BuyFieldAsync());
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
         }
 
@@ -61,9 +61,9 @@ namespace webapi.Controllers
             {
                 return Ok(await _beloilService.BuyOilPumpAsync(fieldId));
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return BadRequest();
+                return BadRequest(exception.Message);
             }
         }
     }

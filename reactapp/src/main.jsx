@@ -11,6 +11,8 @@ import GamePage from './pages/GamePage'
 
 import JwtHelper from './utils/helpers/JwtHelper';
 
+import 'bootstrap/dist/css/bootstrap.css';
+
 const router = createBrowserRouter([
   {
     path: "/authorization",
@@ -28,8 +30,13 @@ const router = createBrowserRouter([
   }
 ]);
 
+String.prototype.format = function () {
+  var args = arguments;
+  return this.replace(/{([0-9]+)}/g, function (match, index) {
+    return typeof args[index] == 'undefined' ? match : args[index];
+  });
+};
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 )

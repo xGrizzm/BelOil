@@ -2,9 +2,9 @@
 {
     public static class GameHelper
     {
-        private const int _baseFieldPrice = 100;
-        private const int _baseOilPumpPrice = 20;
-        private const int _baseNextPumpingSeconds = 30;
+        private const int _baseFieldPrice = 10;
+        private const int _baseOilPumpPrice = 10;
+        private const int _baseNextPumpingSeconds = 15;
         private const int _baseBarrels = 1;
 
         public static int GetFieldPrice(int multiplier)

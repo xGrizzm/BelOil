@@ -31,9 +31,21 @@ namespace webapi.services
 
         public async Task<GameResponse> GetGameAsync()
         {
-            return new GameResponse(
-                Mapper.Map<IEnumerable<Field>>(
-                    await _fieldRepository.GetAsync(User.GetId())));
+            UserEntity user = await _userRepository.GetAsync(User.GetId());
+
+            IEnumerable<Field> fields = Mapper.Map<IEnumerable<Field>>(user.Fields);
+
+            foreach (Field field in fields)
+            {
+                field.OilPumpPrice = GameHelper.GetOilPumpPrice(field.Multiplier);
+
+                foreach (OilPump oilPump in field.OilPumps)
+                {
+                    oilPump.Barrels = GameHelper.GetBarrels(field.Multiplier);
+                }
+            }
+
+            return new GameResponse(user.Barrels, fields, GameHelper.GetFieldPrice((int)Math.Pow(2, user.Fields.Count)));
         }
 
         public async Task<CollectOilPumpResponse> CollectOilPumpAsync(int fieldId, int oilPumpId)
@@ -57,13 +69,13 @@ namespace webapi.services
                 throw new Exception("Unable to collect Oil Pump");
             }
 
-            DateTime nextPumping = DateTime.UtcNow.AddSeconds(GameHelper.GetNextPumpingSeconds(oilPump.Field.Multiplier));
+            DateTimeOffset nextPumping = DateTime.UtcNow.AddSeconds(GameHelper.GetNextPumpingSeconds(oilPump.Field.Multiplier));
             await _oilPumpRepository.UpdateNextPumpingAsync(oilPumpId, nextPumping);
 
             int barrels = user.Barrels + GameHelper.GetBarrels(oilPump.Field.Multiplier);
             await _userRepository.UpdateBarrelsAsync(user.Id, barrels);
 
-            return new CollectOilPumpResponse(barrels, nextPumping);
+            return new CollectOilPumpResponse(barrels, nextPumping.DateTime);
         }
 
         public async Task<BuyResponse<Field>> BuyFieldAsync()
@@ -83,7 +95,9 @@ namespace webapi.services
             int barrels = user.Barrels - fieldPrice;
             await _userRepository.UpdateBarrelsAsync(user.Id, barrels);
 
-            return new BuyResponse<Field>(barrels, Mapper.Map<Field>(addedField));
+            Field field = Mapper.Map<Field>(addedField);
+            field.OilPumpPrice = GameHelper.GetOilPumpPrice(multiplier);
+            return new BuyResponse<Field>(barrels, field);
         }
 
         public async Task<BuyResponse<OilPump>> BuyOilPumpAsync(int fieldId)
@@ -91,7 +105,7 @@ namespace webapi.services
             UserEntity user = await _userRepository.GetAsync(User.GetId());
             FieldEntity field = user.Fields.FirstOrDefault(f => f.Id == fieldId);
 
-            int multiplier = (int)Math.Pow(2, user.Fields.Count);
+            int multiplier = field.Multiplier;
             int oilPumpPrice = GameHelper.GetOilPumpPrice(multiplier);
 
             if (field is null)
@@ -114,7 +128,9 @@ namespace webapi.services
             int barrels = user.Barrels - oilPumpPrice;
             await _userRepository.UpdateBarrelsAsync(user.Id, barrels);
 
-            return new BuyResponse<OilPump>(barrels, Mapper.Map<OilPump>(addedOilPump));
+            OilPump oilPump = Mapper.Map<OilPump>(addedOilPump);
+            oilPump.Barrels = GameHelper.GetBarrels(multiplier);
+            return new BuyResponse<OilPump>(barrels, oilPump);
         }
     }
 }

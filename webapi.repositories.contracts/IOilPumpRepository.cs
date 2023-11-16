@@ -8,6 +8,6 @@ namespace webapi.repositories.contracts
 
         Task<OilPumpEntity> GetAsync(int oilPumpId);
 
-        Task UpdateNextPumpingAsync(int oilPumpId, DateTime nextPumping);
+        Task UpdateNextPumpingAsync(int oilPumpId, DateTimeOffset nextPumping);
     }
 }

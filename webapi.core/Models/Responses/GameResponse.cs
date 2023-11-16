@@ -2,11 +2,17 @@
 {
     public class GameResponse
     {
+        public int Barrels {  get; set; }
+
         public IEnumerable<Field> Fields { get; set; }
 
-        public GameResponse(IEnumerable<Field> fields)
+        public int FieldPrice { get; set; }
+
+        public GameResponse(int barrels, IEnumerable<Field> fields, int fieldPrice)
         {
+            Barrels = barrels;
             Fields = fields;
+            FieldPrice = fieldPrice;
         }
     }
 }

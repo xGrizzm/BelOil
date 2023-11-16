@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import ApiService from '../api/ApiService';
-import JwtHelper from '../utils/helpers/JwtHelper';
 import URLConstants from '../utils/constants/URLConstants';
+import JwtHelper from '../utils/helpers/JwtHelper';
 
 export default function AuthorizationPage() {
     const [state, setState] = useState({ login: "vasil", password: "vasil" });
@@ -24,6 +24,8 @@ export default function AuthorizationPage() {
             
         }
     }
+
+    JwtHelper.removeToken();
 
     return (
         <div>

@@ -10,7 +10,8 @@ namespace webapi.MappingProfiles
         {
             CreateMap<UserEntity, User>();
             CreateMap<FieldEntity, Field>();
-            CreateMap<OilPumpEntity, OilPump>();
+            CreateMap<OilPumpEntity, OilPump>()
+                .ForMember(op => op.NextPumping, option => option.MapFrom(ope => ope.NextPumping.DateTime));
         }
     }
 }

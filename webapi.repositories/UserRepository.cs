@@ -9,6 +9,14 @@ namespace webapi.repositories
     {
         public UserRepository(PostgreDbContext postgreDbContext) : base(postgreDbContext) { }
 
+        public async Task<IEnumerable<UserEntity>> GetAllAsync()
+        {
+            return await Context.Users
+                .Include(u => u.Fields)
+                    .ThenInclude(f => f.OilPumps)
+                .ToListAsync();
+        }
+
         public async Task<UserEntity> GetAsync(string login)
         {
             return await Context.Users.FirstOrDefaultAsync(u => u.Login == login);

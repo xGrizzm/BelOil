@@ -18,7 +18,7 @@ export default function AuthorizationPage() {
     const loginButtonClick = async () => {
         try {
             const response = await ApiService.post(URLConstants.LOGIN_URL, state);
-            JwtHelper.setToken(response.data.token);
+            JwtHelper.setToken(response.token);
             navigate("/game");
         } catch (error) {
             

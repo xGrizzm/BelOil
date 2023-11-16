@@ -3,3 +3,18 @@
     height: 100px;
     margin-top: 10px;
 }
+
+.field-item .field-item-name {
+    font-size: 30px;
+}
+
+.field-item .field-item-oil-pumps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+}
+
+.field-item .field-item-oil-pumps img {
+    margin-left: 5px;
+}

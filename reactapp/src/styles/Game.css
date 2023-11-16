@@ -1,0 +1,26 @@
+.barrel-stat {
+    font-size: 25px;
+    color: #198754;
+    position: relative;
+}
+
+.barrel-stat img {
+    position: absolute;
+    top: 3px;
+    right: -40px;
+}
+
+.leaderboard {
+    font-size: 40px;
+    color: white;
+    display: flex;
+}
+
+.leaderboard img {
+    margin-left: auto;
+    margin-top: 10px;
+}
+
+.leaderboard img:hover {
+    cursor: pointer;
+}

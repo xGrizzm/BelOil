@@ -7,11 +7,15 @@ import JwtHelper from '../utils/helpers/JwtHelper';
 
 import FieldItem from '../components/FieldItem';
 import Field from '../components/Field';
+import Leader from '../components/Leader';
+
+import OilBarrelGreen from '../assets/oil-barrel-green.png';
+import RefreshWhite from '../assets/refresh-white.png';
 
 import '../styles/Game.css';
 
 export default function GamePage() {
-    const [state, setState] = useState({ fields: [], selectedField: null, barrels: 0, fieldPrice: 0, isLoading: false });
+    const [state, setState] = useState({ fields: [], selectedField: null, barrels: 0, fieldPrice: 0, isLoading: false, leaderboard: [] });
 
     const navigate = useNavigate();
 
@@ -31,7 +35,7 @@ export default function GamePage() {
             state.fields.find(f => f.id == fieldId).oilPumps.find(op => op.id == oilPumpId).nextPumping = data.nextPumping;
             setState({ ...state, barrels: data.barrels, isLoading: false });
         } catch (error) {
-            
+            setState({ ...state, isLoading: false });
         }
     }
 
@@ -42,7 +46,7 @@ export default function GamePage() {
             state.fields.push(data.item);
             setState({ ...state, barrels: data.barrels, isLoading: false });
         } catch (error) {
-            
+            setState({ ...state, isLoading: false });
         }
     }
 
@@ -53,34 +57,46 @@ export default function GamePage() {
             state.fields.find(f => f.id == fieldId).oilPumps.push(data.item);
             setState({ ...state, barrels: data.barrels, isLoading: false });
         } catch (error) {
-            
+            setState({ ...state, isLoading: false });
         }
     }
 
-    const refreshBarrels = async (barrels) => {
-        setState({ ...state, barrels: barrels });
+    const getLeaderboardButtonClick = async () => {
+        const data = await ApiService.get(URLConstants.GET_LEADERBOARD_URL);
+        setState({ ...state, leaderboard: data });
     }
 
-    const getGame = async () => {
-        const data = await ApiService.get(URLConstants.GET_GAME_URL);
-        setState({ ...state, barrels: data.barrels, fields: data.fields, fieldPrice: data.fieldPrice });
+    const loadData = async () => {
+        const [gameResult, leaderboardResult] = await Promise.all([ApiService.get(URLConstants.GET_GAME_URL), ApiService.get(URLConstants.GET_LEADERBOARD_URL)]);
+        setState({ ...state, barrels: gameResult.barrels, fields: gameResult.fields, fieldPrice: gameResult.fieldPrice, leaderboard: leaderboardResult });
     }
 
     useEffect(() => {
-        getGame();
+        loadData();
     }, []);
 
     return (
         <div className='d-flex flex-column vh-100' style={{ backgroundColor: '#363636' }}>
-            <div className='mt-4 mx-4'>
-                <button className='btn btn-success float-end' onClick={logoutButtonClick}>Выйти</button>
-                <div style={{ color: '#198754', fontSize: 25 }}>{`У вас есть ${state.barrels}`}</div>
+            <div className='mt-4 mx-4 d-flex'>
+                <div className='barrel-stat'>
+                    {`У вас есть ${state.barrels}`}
+                    <img src={OilBarrelGreen} width='35px' />
+                </div>
+                <button className='btn btn-success ms-auto' onClick={logoutButtonClick}>Выйти</button>
             </div>
             <div className='mt-4 mx-4 h-100 d-flex align-items-center'>
-                <div className='col-4'>
-
+                <div className='col-4 p-5'>
+                    <div className='leaderboard'>
+                        Таблица лидеров
+                        <img src={RefreshWhite} width='45px' height='45px' onClick={getLeaderboardButtonClick} />
+                    </div>
+                    { 
+                        state.leaderboard.map((l, index) => (
+                            <Leader key={index} index={index + 1} leader={l} />
+                        )) 
+                    }
                 </div>
-                <div className='col-8'>
+                <div className='col-8 p-5'>
                     <div className='d-flex'>
                         {
                             !state.selectedField
@@ -95,8 +111,8 @@ export default function GamePage() {
                         {
                             state.selectedField 
                                 ? <Field id={state.selectedField.id} oilPumps={state.selectedField.oilPumps} isLoading={state.isLoading} oilPumpClick={oilPumpClick} />
-                                : state.fields.map(f => (
-                                    <FieldItem key={f.id} field={f} fieldItemClick={fieldItemClick} />
+                                : state.fields.map((f, index) => (
+                                    <FieldItem key={f.id} index={index + 1} field={f} fieldItemClick={fieldItemClick} />
                                 ))
                         }
                     </div>

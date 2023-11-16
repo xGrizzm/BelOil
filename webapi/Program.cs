@@ -77,6 +77,7 @@ builder.Services.AddDbContext<PostgreDbContext>((optionsBuilder) =>
 // Services
 builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
 builder.Services.AddTransient<IGameService, GameService>();
+builder.Services.AddTransient<ILeaderboardService, LeaderboardService>();
 
 // Repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();

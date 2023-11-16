@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import OilBarrelWhite from '../assets/oil-barrel-white.png';
+
 import '../styles/OilPump.css';
 
 export default function OilPump(props) {
@@ -48,7 +50,10 @@ export default function OilPump(props) {
 
     return (
         <button className='oil-pump btn btn-success position-relative' onClick={oilPumpClick} disabled={state.isDisabled || props.isLoading}>
-            <span className='barrels'>{props.oilPump.barrels}</span>
+            <div className='barrels'>
+                {props.oilPump.barrels}
+                <img src={OilBarrelWhite} width='50px' height='50px' />
+            </div>
             <div className='position-absolute' style={{ top: '7px', right: '10px'}}>
                 {state.time}
             </div>

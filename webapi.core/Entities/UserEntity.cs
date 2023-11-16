@@ -17,6 +17,7 @@
             Name = name;
             Login = login;
             Password = password;
+            Barrels = 100;
         }
     }
 }

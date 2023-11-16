@@ -28,22 +28,26 @@ export default function AuthorizationPage() {
     JwtHelper.removeToken();
 
     return (
-        <div>
-            <input
-                name="login"
-                type="text"
-                placeholder="Логин"
-                defaultValue={state.login}
-                onChange={handleChange} />
+        <div className='d-flex justify-content-center align-items-center vh-100 ' style={{ backgroundColor: '#363636' }}>
+            <div className='d-flex flex-column'>
+                <input
+                    className='form-control my-2'
+                    name="login"
+                    type="text"
+                    placeholder="Логин"
+                    defaultValue={state.login}
+                    onChange={handleChange} />
 
-            <input
-                name="password"
-                type="password"
-                placeholder="Пароль"
-                defaultValue={state.password}
-                onChange={handleChange} />
+                <input
+                    className='form-control my-2'
+                    name="password"
+                    type="password"
+                    placeholder="Пароль"
+                    defaultValue={state.password}
+                    onChange={handleChange} />
 
-            <button onClick={loginButtonClick}>Войти</button>
+                <button className='btn btn-success my-2' onClick={loginButtonClick}>Войти</button>
+            </div>
         </div>
     );
 }

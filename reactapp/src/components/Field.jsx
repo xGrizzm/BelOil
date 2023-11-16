@@ -9,7 +9,7 @@ export default function Field(props) {
         <div className='field d-flex flex-wrap'>
             {
                 props.oilPumps.map(op => (
-                    <OilPump key={op.id} oilPump={op} refreshBarrels={props.refreshBarrels} />
+                    <OilPump key={op.id} oilPump={op} isLoading={props.isLoading} oilPumpClick={props.oilPumpClick} />
                 ))
             }
         </div>

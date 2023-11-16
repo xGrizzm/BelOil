@@ -11,7 +11,7 @@ import Field from '../components/Field';
 import '../styles/Game.css';
 
 export default function GamePage() {
-    const [state, setState] = useState({ fields: [], selectedField: null, barrels: 0, fieldPrice: 0, isBuying: false });
+    const [state, setState] = useState({ fields: [], selectedField: null, barrels: 0, fieldPrice: 0, isLoading: false });
 
     const navigate = useNavigate();
 
@@ -24,12 +24,23 @@ export default function GamePage() {
         setState({ ...state, selectedField: field})
     }
 
+    const oilPumpClick = async (fieldId, oilPumpId) => {
+        try {
+            setState({ ...state, isLoading: true });
+            const data = await ApiService.put(URLConstants.COLLECT_OIL_PUMP_URL.format(fieldId, oilPumpId));
+            state.fields.find(f => f.id == fieldId).oilPumps.find(op => op.id == oilPumpId).nextPumping = data.nextPumping;
+            setState({ ...state, barrels: data.barrels, isLoading: false });
+        } catch (error) {
+            
+        }
+    }
+
     const buyFieldClick = async () => {
         try {
-            setState({ ...state, isBuying: true });
+            setState({ ...state, isLoading: true });
             const data = await ApiService.post(URLConstants.BUY_FIELD_URL);
             state.fields.push(data.item);
-            setState({ ...state, barrels: data.barrels, isBuying: false });
+            setState({ ...state, barrels: data.barrels, isLoading: false });
         } catch (error) {
             
         }
@@ -37,10 +48,10 @@ export default function GamePage() {
 
     const buyOilPumpClick = async (fieldId) => {
         try {
-            setState({ ...state, isBuying: true });
+            setState({ ...state, isLoading: true });
             const data = await ApiService.post(URLConstants.BUY_OIL_PUMP_URL.format(fieldId));
             state.fields.find(f => f.id == fieldId).oilPumps.push(data.item);
-            setState({ ...state, barrels: data.barrels, isBuying: false });
+            setState({ ...state, barrels: data.barrels, isLoading: false });
         } catch (error) {
             
         }
@@ -73,9 +84,9 @@ export default function GamePage() {
                     <div className='d-flex'>
                         {
                             !state.selectedField
-                                ? <button className='me-1 btn btn-success' onClick={buyFieldClick} disabled={state.fieldPrice > state.barrels || state.isBuying}>{`Купить месторождение (${state.fieldPrice})`}</button>
+                                ? <button className='me-1 btn btn-success' onClick={buyFieldClick} disabled={state.fieldPrice > state.barrels || state.isLoading}>{`Купить месторождение (${state.fieldPrice})`}</button>
                                 : state.selectedField.oilPumps.length < 4 
-                                    ? <button className='me-1 btn btn-success' onClick={() => buyOilPumpClick(state.selectedField.id)} disabled={state.selectedField.oilPumpPrice > state.barrels || state.isBuying}>{`Купить насос (${state.selectedField.oilPumpPrice})`}</button>
+                                    ? <button className='me-1 btn btn-success' onClick={() => buyOilPumpClick(state.selectedField.id)} disabled={state.selectedField.oilPumpPrice > state.barrels || state.isLoading}>{`Купить насос (${state.selectedField.oilPumpPrice})`}</button>
                                     : null
                         }
                         { state.selectedField ? <button className='btn btn-success ms-auto' onClick={() => setState({...state, selectedField: null})}>Назад</button> : null }
@@ -83,7 +94,7 @@ export default function GamePage() {
                     <div className='mt-3' style={{ overflowY: 'auto', height: '550px'}}>
                         {
                             state.selectedField 
-                                ? <Field id={state.selectedField.id} oilPumps={state.selectedField.oilPumps} refreshBarrels={refreshBarrels} />
+                                ? <Field id={state.selectedField.id} oilPumps={state.selectedField.oilPumps} isLoading={state.isLoading} oilPumpClick={oilPumpClick} />
                                 : state.fields.map(f => (
                                     <FieldItem key={f.id} field={f} fieldItemClick={fieldItemClick} />
                                 ))
